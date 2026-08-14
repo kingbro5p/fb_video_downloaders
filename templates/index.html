@@ -3,184 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FB Video Downloader</title>
+    <title>FB Downloader - প্রিমিয়াম এইচডি ভিডিও ডাউনলোডার</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --primary: #1877f2;
+            --primary-gradient: linear-gradient(135deg, #0062e0 0%, #19afef 100%);
+            --accent-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-card: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Hind Siliguri', 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
-            background-color: #f0f2f5;
-            color: #1c1e21;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: var(--bg-gradient);
+            color: var(--text-main);
             min-height: 100vh;
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 15px;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .container {
-            background: #ffffff;
+        /* Glowing Background Circles */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: 0;
+            opacity: 0.4;
+        }
+        body::before {
+            background: #0062e0;
+            top: -50px;
+            left: -50px;
+        }
+        body::after {
+            background: #10b981;
+            bottom: -50px;
+            right: -50px;
+        }
+
+        .main-wrapper {
             width: 100%;
-            max-width: 600px;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 680px;
+            z-index: 1;
+            margin: auto 0;
+        }
+
+        .header {
             text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(24, 119, 242, 0.15);
+            border: 1px solid rgba(24, 119, 242, 0.3);
+            color: #60a5fa;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
         }
 
         h1 {
-            color: #1877f2;
-            margin-bottom: 8px;
-            font-size: 26px;
+            font-size: 38px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
 
         p.subtitle {
-            color: #606770;
-            font-size: 14px;
-            margin-bottom: 25px;
+            color: var(--text-muted);
+            font-size: 16px;
         }
 
-        .input-group {
+        /* Card Container */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Input Box Styling */
+        .input-box-wrapper {
+            position: relative;
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .input-box-wrapper:focus-within {
+            border-color: #3b82f6;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .input-box-wrapper i.search-icon {
+            color: var(--text-muted);
+            font-size: 18px;
+            margin-left: 15px;
         }
 
         input[type="url"] {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #dddfe2;
-            border-radius: 8px;
-            font-size: 15px;
+            width: 100%;
+            background: transparent;
+            border: none;
             outline: none;
-            transition: border-color 0.2s;
+            color: #fff;
+            padding: 14px 15px;
+            font-size: 15px;
         }
 
-        input[type="url"]:focus {
-            border-color: #1877f2;
+        input[type="url"]::placeholder {
+            color: #64748b;
         }
 
-        button {
-            background-color: #1877f2;
+        .btn-download {
+            background: var(--primary-gradient);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 14px 28px;
+            border-radius: 12px;
             font-size: 15px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        button:hover {
-            background-color: #166fe5;
-        }
-
-        button:disabled {
-            background-color: #9cbcf8;
-            cursor: not-allowed;
-        }
-
-        .result-box {
-            display: none;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid #e4e6eb;
-            text-align: left;
-        }
-
-        .thumbnail-container {
-            width: 100%;
-            max-height: 300px;
-            overflow: hidden;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            background-color: #000;
+            white-space: nowrap;
             display: flex;
-            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 98, 224, 0.4);
         }
 
-        .thumbnail-container img {
-            width: 100%;
-            object-fit: contain;
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 98, 224, 0.6);
         }
 
-        .video-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #050505;
+        .btn-download:active {
+            transform: translateY(0);
         }
 
-        .download-btn {
-            display: inline-block;
-            width: 100%;
-            text-align: center;
-            background-color: #42b72a;
-            color: white;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background-color 0.2s;
+        .btn-download:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .download-btn:hover {
-            background-color: #36a420;
-        }
-
-        .error-msg {
-            color: #fa3e3e;
-            background: #ffebe9;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 14px;
-            display: none;
-            margin-top: 15px;
-        }
-
+        /* Loading Spinner */
         .loader {
             display: none;
-            margin: 15px auto;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #1877f2;
+            text-align: center;
+            margin: 25px 0 10px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #3b82f6;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
             animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        .loader p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Error Message */
+        .error-card {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Video Result Section */
+        .result-card {
+            display: none;
+            margin-top: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .thumbnail-box {
+            position: relative;
+            width: 100%;
+            max-height: 320px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 15px;
+        }
+
+        .thumbnail-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .play-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .video-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.4;
+            color: #fff;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .save-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background: var(--accent-gradient);
+            color: white;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            z-index: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 576px) {
+            h1 { font-size: 28px; }
+            .glass-card { padding: 20px; }
+            .input-box-wrapper { flex-direction: column; gap: 10px; background: transparent; border: none; padding: 0; }
+            .input-box-wrapper input {
+                background: rgba(15, 23, 42, 0.6);
+                border: 1px solid var(--glass-border);
+                border-radius: 12px;
+            }
+            .btn-download { width: 100%; justify-content: center; padding: 14px; }
+            .input-box-wrapper i.search-icon { display: none; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Facebook Video Downloader</h1>
-    <p class="subtitle">যেকোনো ফেসবুক ভিডিওর লিংক দিয়ে সহজেই ডাউনলোড করুন</p>
-
-    <div class="input-group">
-        <input type="url" id="videoUrl" placeholder="এখানে ফেসবুক ভিডিওর লিংক দিন..." required>
-        <button id="submitBtn" onclick="fetchVideo()">ডাউনলোড</button>
-    </div>
-
-    <div class="loader" id="loader"></div>
-    <div class="error-msg" id="errorMsg"></div>
-
-    <div class="result-box" id="resultBox">
-        <div class="thumbnail-container">
-            <img id="thumbImg" src="" alt="Thumbnail">
+<div class="main-wrapper">
+    <!-- Header -->
+    <div class="header">
+        <div class="badge">
+            <i class="fa-solid fa-bolt"></i> দ্রুত এবং ফ্রি ডাউনলোডার
         </div>
-        <p class="video-title" id="videoTitle"></p>
-        <a id="downloadLink" class="download-btn" href="" target="_blank" download>ভিডিও টি ডাউনলোড করুন</a>
+        <h1>Facebook Video Downloader</h1>
+        <p class="subtitle">এইচডি কোয়ালিটিতে যেকোনো ফেসবুক ভিডিও ডাউনলোড করুন একদম সহজে</p>
     </div>
+
+    <!-- Main Card -->
+    <div class="glass-card">
+        <div class="input-box-wrapper">
+            <i class="fa-solid fa-link search-icon"></i>
+            <input type="url" id="videoUrl" placeholder="ফেসবুক ভিডিওর লিংক পেস্ট করুন..." autocomplete="off">
+            <button class="btn-download" id="submitBtn" onclick="fetchVideo()">
+                <span>ডাউনলোড</span>
+                <i class="fa-solid fa-arrow-down"></i>
+            </button>
+        </div>
+
+        <!-- Loader -->
+        <div class="loader" id="loader">
+            <div class="spinner"></div>
+            <p>ভিডিওর তথ্য আনা হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...</p>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-card" id="errorMsg">
+            <i class="fa-solid fa-circle-exclamation"></i> <span id="errorText"></span>
+        </div>
+
+        <!-- Result Card -->
+        <div class="result-card" id="resultBox">
+            <div class="thumbnail-box">
+                <img id="thumbImg" src="" alt="Thumbnail">
+                <div class="play-badge">
+                    <i class="fa-solid fa-play"></i>
+                </div>
+            </div>
+            <div class="video-info">
+                <h3 id="videoTitle">ভিডিওর শিরোনাম...</h3>
+                <a id="downloadLink" class="save-btn" href="" target="_blank" download>
+                    <i class="fa-solid fa-download"></i> HD Video Download
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 FB Downloader. All rights reserved.</p>
+    </footer>
 </div>
 
 <script>
@@ -189,14 +397,15 @@
         const submitBtn = document.getElementById('submitBtn');
         const loader = document.getElementById('loader');
         const errorMsg = document.getElementById('errorMsg');
+        const errorText = document.getElementById('errorText');
         const resultBox = document.getElementById('resultBox');
 
         if (!urlInput) {
-            alert('অনুগ্রহ করে একটি লিংক দিন!');
+            showError('অনুগ্রহ করে একটি সঠিক লিঙ্ক প্রদান করুন!');
             return;
         }
 
-        // Reset UI
+        // Reset Interface
         errorMsg.style.display = 'none';
         resultBox.style.display = 'none';
         loader.style.display = 'block';
@@ -214,21 +423,26 @@
             const data = await response.json();
 
             if (response.ok && data.success) {
-                document.getElementById('thumbImg').src = data.thumbnail;
+                document.getElementById('thumbImg').src = data.thumbnail || 'https://via.placeholder.com/600x350/0f172a/ffffff?text=FB+Video';
                 document.getElementById('videoTitle').innerText = data.title;
                 document.getElementById('downloadLink').href = data.download_url;
                 resultBox.style.display = 'block';
             } else {
-                errorMsg.innerText = data.error || 'ভিডিও প্রসেস করতে সমস্যা হয়েছে।';
-                errorMsg.style.display = 'block';
+                showError(data.error || 'ভিডিওটি এক্সট্র্যাক্ট করা সম্ভব হয়নি। লিঙ্কটি আবার চেক করুন।');
             }
         } catch (err) {
-            errorMsg.innerText = 'সার্ভারে সংযোগ করা সম্ভব হয়নি। আবার চেষ্টা করুন।';
-            errorMsg.style.display = 'block';
+            showError('সার্ভারের সাথে সংযোগ বিচ্ছিন্ন হয়েছে। আবার চেষ্টা করুন।');
         } finally {
             loader.style.display = 'none';
             submitBtn.disabled = false;
         }
+    }
+
+    function showError(msg) {
+        const errorMsg = document.getElementById('errorMsg');
+        const errorText = document.getElementById('errorText');
+        errorText.innerText = msg;
+        errorMsg.style.display = 'block';
     }
 </script>
 
