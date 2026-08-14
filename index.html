@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FB Video Downloader</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #1877f2;
+            margin-bottom: 8px;
+            font-size: 26px;
+        }
+
+        p.subtitle {
+            color: #606770;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="url"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #dddfe2;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="url"]:focus {
+            border-color: #1877f2;
+        }
+
+        button {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #166fe5;
+        }
+
+        button:disabled {
+            background-color: #9cbcf8;
+            cursor: not-allowed;
+        }
+
+        .result-box {
+            display: none;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e4e6eb;
+            text-align: left;
+        }
+
+        .thumbnail-container {
+            width: 100%;
+            max-height: 300px;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+        }
+
+        .thumbnail-container img {
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .video-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #050505;
+        }
+
+        .download-btn {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            background-color: #42b72a;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .download-btn:hover {
+            background-color: #36a420;
+        }
+
+        .error-msg {
+            color: #fa3e3e;
+            background: #ffebe9;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+            margin-top: 15px;
+        }
+
+        .loader {
+            display: none;
+            margin: 15px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1877f2;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Facebook Video Downloader</h1>
+    <p class="subtitle">যেকোনো ফেসবুক ভিডিওর লিংক দিয়ে সহজেই ডাউনলোড করুন</p>
+
+    <div class="input-group">
+        <input type="url" id="videoUrl" placeholder="এখানে ফেসবুক ভিডিওর লিংক দিন..." required>
+        <button id="submitBtn" onclick="fetchVideo()">ডাউনলোড</button>
+    </div>
+
+    <div class="loader" id="loader"></div>
+    <div class="error-msg" id="errorMsg"></div>
+
+    <div class="result-box" id="resultBox">
+        <div class="thumbnail-container">
+            <img id="thumbImg" src="" alt="Thumbnail">
+        </div>
+        <p class="video-title" id="videoTitle"></p>
+        <a id="downloadLink" class="download-btn" href="" target="_blank" download>ভিডিও টি ডাউনলোড করুন</a>
+    </div>
+</div>
+
+<script>
+    async function fetchVideo() {
+        const urlInput = document.getElementById('videoUrl').value.trim();
+        const submitBtn = document.getElementById('submitBtn');
+        const loader = document.getElementById('loader');
+        const errorMsg = document.getElementById('errorMsg');
+        const resultBox = document.getElementById('resultBox');
+
+        if (!urlInput) {
+            alert('অনুগ্রহ করে একটি লিংক দিন!');
+            return;
+        }
+
+        // Reset UI
+        errorMsg.style.display = 'none';
+        resultBox.style.display = 'none';
+        loader.style.display = 'block';
+        submitBtn.disabled = true;
+
+        try {
+            const response = await fetch('/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url: urlInput })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                document.getElementById('thumbImg').src = data.thumbnail;
+                document.getElementById('videoTitle').innerText = data.title;
+                document.getElementById('downloadLink').href = data.download_url;
+                resultBox.style.display = 'block';
+            } else {
+                errorMsg.innerText = data.error || 'ভিডিও প্রসেস করতে সমস্যা হয়েছে।';
+                errorMsg.style.display = 'block';
+            }
+        } catch (err) {
+            errorMsg.innerText = 'সার্ভারে সংযোগ করা সম্ভব হয়নি। আবার চেষ্টা করুন।';
+            errorMsg.style.display = 'block';
+        } finally {
+            loader.style.display = 'none';
+            submitBtn.disabled = false;
+        }
+    }
+</script>
+
+</body>
+</html>
