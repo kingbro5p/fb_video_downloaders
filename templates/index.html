@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FB Downloader - প্রিমিয়াম এইচডি ভিডিও ডাউনলোডার</title>
-    <!-- Font Awesome for Icons -->
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,7 +17,6 @@
             --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
             --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-card: rgba(255, 255, 255, 0.08);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
         }
@@ -42,7 +41,6 @@
             position: relative;
         }
 
-        /* Glowing Background Circles */
         body::before, body::after {
             content: '';
             position: absolute;
@@ -53,16 +51,8 @@
             z-index: 0;
             opacity: 0.4;
         }
-        body::before {
-            background: #0062e0;
-            top: -50px;
-            left: -50px;
-        }
-        body::after {
-            background: #10b981;
-            bottom: -50px;
-            right: -50px;
-        }
+        body::before { background: #0062e0; top: -50px; left: -50px; }
+        body::after { background: #10b981; bottom: -50px; right: -50px; }
 
         .main-wrapper {
             width: 100%;
@@ -106,7 +96,6 @@
             font-size: 16px;
         }
 
-        /* Card Container */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
@@ -117,7 +106,6 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
-        /* Input Box Styling */
         .input-box-wrapper {
             position: relative;
             display: flex;
@@ -150,9 +138,7 @@
             font-size: 15px;
         }
 
-        input[type="url"]::placeholder {
-            color: #64748b;
-        }
+        input[type="url"]::placeholder { color: #64748b; }
 
         .btn-download {
             background: var(--primary-gradient);
@@ -176,17 +162,12 @@
             box-shadow: 0 8px 25px rgba(0, 98, 224, 0.6);
         }
 
-        .btn-download:active {
-            transform: translateY(0);
-        }
-
         .btn-download:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
 
-        /* Loading Spinner */
         .loader {
             display: none;
             text-align: center;
@@ -203,16 +184,10 @@
             margin: 0 auto 10px;
         }
 
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        .loader p {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
+        .loader p { color: var(--text-muted); font-size: 14px; }
 
-        /* Error Message */
         .error-card {
             display: none;
             background: rgba(239, 68, 68, 0.1);
@@ -225,7 +200,6 @@
             text-align: center;
         }
 
-        /* Video Result Section */
         .result-card {
             display: none;
             margin-top: 25px;
@@ -256,24 +230,6 @@
             height: 100%;
             object-fit: cover;
             display: block;
-        }
-
-        .play-badge {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .video-info h3 {
@@ -310,7 +266,6 @@
             box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
         }
 
-        /* Footer */
         footer {
             margin-top: 40px;
             text-align: center;
@@ -319,7 +274,6 @@
             z-index: 1;
         }
 
-        /* Responsive Design */
         @media (max-width: 576px) {
             h1 { font-size: 28px; }
             .glass-card { padding: 20px; }
@@ -337,16 +291,14 @@
 <body>
 
 <div class="main-wrapper">
-    <!-- Header -->
     <div class="header">
         <div class="badge">
-            <i class="fa-solid fa-bolt"></i> দ্রুত এবং ফ্রি ডাউনলোডার
+            <i class="fa-solid fa-bolt"></i> আল্ট্রা ফাস্ট ডাউনলোডার
         </div>
         <h1>Facebook Video Downloader</h1>
-        <p class="subtitle">এইচডি কোয়ালিটিতে যেকোনো ফেসবুক ভিডিও ডাউনলোড করুন একদম সহজে</p>
+        <p class="subtitle">এইচডি কোয়ালিটিতে যেকোনো ফেসবুক ভিডিও ডাউনলোড করুন</p>
     </div>
 
-    <!-- Main Card -->
     <div class="glass-card">
         <div class="input-box-wrapper">
             <i class="fa-solid fa-link search-icon"></i>
@@ -357,24 +309,18 @@
             </button>
         </div>
 
-        <!-- Loader -->
         <div class="loader" id="loader">
             <div class="spinner"></div>
             <p>ভিডিওর তথ্য আনা হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...</p>
         </div>
 
-        <!-- Error Message -->
         <div class="error-card" id="errorMsg">
             <i class="fa-solid fa-circle-exclamation"></i> <span id="errorText"></span>
         </div>
 
-        <!-- Result Card -->
         <div class="result-card" id="resultBox">
             <div class="thumbnail-box">
                 <img id="thumbImg" src="" alt="Thumbnail">
-                <div class="play-badge">
-                    <i class="fa-solid fa-play"></i>
-                </div>
             </div>
             <div class="video-info">
                 <h3 id="videoTitle">ভিডিওর শিরোনাম...</h3>
@@ -385,9 +331,8 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
-        <p>© 2026 FB Downloader. All rights reserved.</p>
+        <p>© FB Downloader. All rights reserved.</p>
     </footer>
 </div>
 
@@ -405,7 +350,6 @@
             return;
         }
 
-        // Reset Interface
         errorMsg.style.display = 'none';
         resultBox.style.display = 'none';
         loader.style.display = 'block';
@@ -414,9 +358,7 @@
         try {
             const response = await fetch('/download', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ url: urlInput })
             });
 
@@ -428,10 +370,10 @@
                 document.getElementById('downloadLink').href = data.download_url;
                 resultBox.style.display = 'block';
             } else {
-                showError(data.error || 'ভিডিওটি এক্সট্র্যাক্ট করা সম্ভব হয়নি। লিঙ্কটি আবার চেক করুন।');
+                showError(data.error || 'ভিডিওটি এক্সট্র্যাক্ট করা সম্ভব হয়নি।');
             }
         } catch (err) {
-            showError('সার্ভারের সাথে সংযোগ বিচ্ছিন্ন হয়েছে। আবার চেষ্টা করুন।');
+            showError('সার্ভারের সাথে সংযোগ বিচ্ছিন্ন হয়েছে।');
         } finally {
             loader.style.display = 'none';
             submitBtn.disabled = false;
@@ -439,10 +381,8 @@
     }
 
     function showError(msg) {
-        const errorMsg = document.getElementById('errorMsg');
-        const errorText = document.getElementById('errorText');
-        errorText.innerText = msg;
-        errorMsg.style.display = 'block';
+        document.getElementById('errorText').innerText = msg;
+        document.getElementById('errorMsg').style.display = 'block';
     }
 </script>
 
